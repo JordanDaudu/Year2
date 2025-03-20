@@ -25,7 +25,7 @@ public class LinkedList
         string = string + tail.data;
         return string;
     }
-    public void add(int data)
+    public boolean add(int data)
     {
         Node node = new Node(data);
         if(head == null)
@@ -38,13 +38,14 @@ public class LinkedList
             tail.next = node;
             tail = node;
         }
+        return true;
     }
-    public void remove(int data)
+    public boolean remove(int data)
     {
         if(head == null)
         {
             System.out.println("Linked list is empty!");
-            return;
+            return false;
         }
         if(head.data == data)
         {
@@ -55,7 +56,7 @@ public class LinkedList
             }
             else
                 head = head.next;
-            return;
+            return true;
         }
         Node tmp = head;
         while(tmp.next != null && tmp.next.data != data)
@@ -63,19 +64,34 @@ public class LinkedList
         if(tmp.next == null)
         {
             System.out.println("Data not in linked list");
-            return;
+            return false;
         }
+        if(tmp.next == tail)
+            tail = tmp;
         tmp.next = tmp.next.next;
+        return true;
     }
     public boolean find(int data)
     {
+        if(head == null)
+        {
+            System.out.println("Linked list is empty!");
+            return false;
+        }
         if(head.data == data)
+        {
+            System.out.println("TRUE, data is inside linked list");
             return true;
+        }
         Node tmp = head;
         while(tmp.next != null && tmp.next.data != data)
             tmp = tmp.next;
         if(tmp.next == null)
+        {
+            System.out.println("FALSE, data isn't inside linked list");
             return false;
+        }
+        System.out.println("TRUE, data is inside linked list");
         return true;
     }
 
@@ -112,9 +128,9 @@ public class LinkedList
         Scanner sc = new Scanner(System.in);
         int choice = 0, data;
         LinkedList list = new LinkedList();
-        while(choice != 4)
+        while(choice != 5)
         {
-            System.out.println("1.Add\n2.Remove\n3.Find\n4.Quit");
+            System.out.println("1.Add\n2.Remove\n3.Find\n4.Print Linked List\n5.Quit");
             choice = checkInteger(sc);
             switch (choice)
             {
@@ -126,23 +142,21 @@ public class LinkedList
                 case 2 -> {
                     System.out.print("Type data (int): ");
                     data = checkInteger(sc);
-                    list.remove(data);
+                    System.out.println(list.remove(data));
                 }
                 case 3 -> {
                     System.out.print("Type data (int): ");
                     data = checkInteger(sc);
-                    if(list.find(data))
-                        System.out.println("TRUE, data is inside linked list");
-                    else
-                        System.out.println("FALSE, data isn't inside linked list");
+                    list.find(data);
                 }
                 case 4 -> {
-                    break;
+                    System.out.println(list);
                 }
+                case 5 -> System.out.println("Leaving...");
                 default -> System.out.println("Invalid choice");
             }
         }
-        System.out.println("Printing final linked list: ");
+        System.out.print("\nPrinting final linked list: ");
         System.out.println(list);
         sc.close();
     }
